@@ -1,0 +1,52 @@
+name: Changia CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Run backend tests if present
+        working-directory: backend
+        run: npm run test --if-present
+
+      - name: Run backend lint if present
+        working-directory: backend
+        run: npm run lint --if-present
+
+      - name: Run frontend tests if present
+        working-directory: frontend
+        run: npm run test --if-present
+
+      - name: Run frontend lint if present
+        working-directory: frontend
+        run: npm run lint --if-present
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
