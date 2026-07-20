@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import { Bell, CalendarDays, Gift, Home, LayoutDashboard, LogOut, Menu, Plus, Search, Shield, Sparkles } from 'lucide-react';
+import { Bell, CalendarDays, Gift, Home, LayoutDashboard, LogOut, Menu, Plus, QrCode, Search, Shield, Sparkles, Ticket } from 'lucide-react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { CreateSpaceModal } from './CreateSpaceModal.jsx';
-
-const navItems = [
-  { to: '/app/home', icon: Home, label: 'Home' },
-  { to: '/app/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/app/admin', icon: Shield, label: 'Admin' },
-];
 
 export function AppShell() {
   const { user, logout } = useAuth();
@@ -16,6 +10,14 @@ export function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [createMode, setCreateMode] = useState('card');
+
+  const navItems = [
+    { to: '/app/dunda', icon: Ticket, label: 'Dunda events' },
+    { to: '/app/dunda/check-in', icon: QrCode, label: 'Gate check-in' },
+    { to: '/app/home', icon: Home, label: 'Celebrations' },
+    { to: '/app/dashboard', icon: LayoutDashboard, label: 'Legacy dashboard' },
+    ...(user?.role === 'admin' ? [{ to: '/app/admin', icon: Shield, label: 'Admin' }] : []),
+  ];
 
   function openCreate(mode) {
     setCreateMode(mode);
@@ -27,18 +29,18 @@ export function AppShell() {
   }
 
   return (
-    <div className="app-shell">
-      <aside className={`sidebar ${mobileOpen ? 'open' : ''}`}>
+    <div className="app-shell dunda-app-shell">
+      <aside className={`sidebar dunda-sidebar ${mobileOpen ? 'open' : ''}`}>
         <div className="sidebar-top">
           <div>
-            <div className="eyebrow cyan">Changia</div>
-            <h1>Live System</h1>
+            <div className="eyebrow lime">Dunda</div>
+            <h1>by Changia</h1>
           </div>
           <div className="logo-pill"><Sparkles size={18} /></div>
         </div>
-        <div className="glass-note">
-          <p className="note-title">Kenya-first system</p>
-          <p>Compact, mobile-friendly, trust-focused, and ready for publishing work.</p>
+        <div className="glass-note dunda-side-note">
+          <p className="note-title">Ticket. Gift. Pull up.</p>
+          <p>Build events that sell through tickets, squads and shared moments.</p>
         </div>
         <nav className="sidebar-nav">
           {navItems.map(({ to, icon: Icon, label }) => (
@@ -49,8 +51,8 @@ export function AppShell() {
           ))}
         </nav>
         <div className="sidebar-actions">
-          <button className="button primary full" onClick={() => openCreate('card')}><Gift size={16} /> New Card</button>
-          <button className="button secondary full" onClick={() => openCreate('event')}><CalendarDays size={16} /> New Event</button>
+          <button className="button primary full dunda-sidebar-primary" onClick={() => navigate('/app/dunda/new')}><Plus size={16} /> Create Dunda</button>
+          <button className="button secondary full" onClick={() => openCreate('card')}><Gift size={16} /> Celebration card</button>
         </div>
         <div className="sidebar-footer">
           <div>
@@ -65,19 +67,18 @@ export function AppShell() {
       </aside>
 
       <main className="main-area">
-        <div className="topbar card">
+        <div className="topbar card dunda-app-topbar">
           <div className="row gap-12 wrap">
-            <button className="icon-button mobile-only" onClick={() => setMobileOpen((v) => !v)}><Menu size={18} /></button>
+            <button className="icon-button mobile-only" onClick={() => setMobileOpen((value) => !value)}><Menu size={18} /></button>
             <div className="search-box">
               <Search size={16} />
-              <input placeholder="Search spaces, themes, contributors..." />
+              <input placeholder="Search events, tickets, guests..." />
             </div>
           </div>
           <div className="row gap-12 wrap">
-            <span className="badge badge-green">Live Build</span>
-            <span className="badge">Publishable</span>
+            <span className="badge badge-green">Dunda live</span>
             <button className="button secondary"><Bell size={16} /> Alerts</button>
-            <button className="button primary" onClick={() => openCreate('card')}><Plus size={16} /> New</button>
+            <button className="button primary dunda-top-create" onClick={() => navigate('/app/dunda/new')}><Plus size={16} /> New event</button>
           </div>
         </div>
         <div className="page-frame">
