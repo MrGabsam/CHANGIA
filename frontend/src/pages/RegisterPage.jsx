@@ -15,7 +15,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(form);
-      navigate('/app/home');
+      navigate('/app/dunda/new');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed.');
     } finally {
@@ -24,23 +24,24 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="eyebrow cyan">Changia</div>
-        <h1>Create account</h1>
-        <p>Start managing celebration cards, contribution spaces, and ticketed events.</p>
+    <div className="auth-page dunda-auth-page">
+      <div className="auth-card dunda-auth-card">
+        <div className="eyebrow lime">Dunda by Changia</div>
+        <h1>Launch your first Dunda</h1>
+        <p>Create one organiser account for ticketing, gifts, squads, promotion and gate operations.</p>
         <form className="form-grid single-col" onSubmit={submit}>
-          <div className="field"><label>Full name</label><input value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} /></div>
-          <div className="field"><label>Email</label><input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
-          <div className="field"><label>Phone</label><input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
-          <div className="field"><label>Password</label><input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></div>
+          <div className="field"><label>Full name</label><input value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} required /></div>
+          <div className="field"><label>Email</label><input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></div>
+          <div className="field"><label>Phone</label><input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} required /></div>
+          <div className="field"><label>Password</label><input type="password" minLength="8" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required /></div>
           {error ? <div className="alert alert-error">{error}</div> : null}
-          <button className="button primary" disabled={loading}>{loading ? 'Creating account...' : 'Register'}</button>
+          <button className="button primary dunda-sidebar-primary" disabled={loading}>{loading ? 'Creating account...' : 'Create organiser account'}</button>
         </form>
         <div className="auth-footer">
-          <span>Already have an account?</span>
+          <span>Already registered?</span>
           <Link to="/login">Login</Link>
         </div>
+        <Link className="dunda-auth-home" to="/">← Back to Dunda</Link>
       </div>
     </div>
   );

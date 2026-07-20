@@ -8,6 +8,12 @@ import HomePage from './pages/HomePage.jsx';
 import SpacePage from './pages/SpacePage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
+import DundaLandingPage from './pages/DundaLandingPage.jsx';
+import PublicDundaEventPage from './pages/PublicDundaEventPage.jsx';
+import DundaDashboardPage from './pages/DundaDashboardPage.jsx';
+import CreateDundaPage from './pages/CreateDundaPage.jsx';
+import DundaCheckInPage from './pages/DundaCheckInPage.jsx';
+import './dunda.css';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -19,6 +25,8 @@ function ProtectedRoute({ children }) {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<DundaLandingPage />} />
+      <Route path="/e/:slug" element={<PublicDundaEventPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route
@@ -29,13 +37,16 @@ export default function App() {
           </ProtectedRoute>
         }
       >
+        <Route path="dunda" element={<DundaDashboardPage />} />
+        <Route path="dunda/new" element={<CreateDundaPage />} />
+        <Route path="dunda/check-in" element={<DundaCheckInPage />} />
         <Route path="home" element={<HomePage />} />
         <Route path="spaces/:id" element={<SpacePage />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="admin" element={<AdminPage />} />
-        <Route index element={<Navigate to="home" replace />} />
+        <Route index element={<Navigate to="dunda" replace />} />
       </Route>
-      <Route path="*" element={<Navigate to="/app/home" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
