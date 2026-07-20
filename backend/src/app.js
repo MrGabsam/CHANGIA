@@ -30,7 +30,12 @@ app.use('/api/spaces', spacesRoutes);
 app.use('/api/contributions', contributionsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/dunda', dundaRoutes);
+app.use('/api/dunda', (req, res, next) => {
+  if (env.nodeEnv === 'production' && req.body?.paymentMethod === 'test') {
+    req.body.paymentMethod = 'mpesa';
+  }
+  next();
+}, dundaRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
