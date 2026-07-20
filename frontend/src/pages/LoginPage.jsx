@@ -15,7 +15,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.email, form.password);
-      navigate('/app/home');
+      navigate('/app/dunda');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed.');
     } finally {
@@ -24,25 +24,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="eyebrow cyan">Changia</div>
+    <div className="auth-page dunda-auth-page">
+      <div className="auth-card dunda-auth-card">
+        <div className="eyebrow lime">Dunda by Changia</div>
         <h1>Welcome back</h1>
-        <p>Sign in to manage your cards, contributions, and paid events.</p>
+        <p>Sign in to publish events, monitor ticket revenue and run gate check-in.</p>
         <form className="form-grid single-col" onSubmit={submit}>
-          <div className="field"><label>Email</label><input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="grace@changia.app" /></div>
-          <div className="field"><label>Password</label><input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="••••••••" /></div>
+          <div className="field"><label>Email</label><input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="grace@changia.app" required /></div>
+          <div className="field"><label>Password</label><input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="••••••••" required /></div>
           {error ? <div className="alert alert-error">{error}</div> : null}
-          <button className="button primary" disabled={loading}>{loading ? 'Signing in...' : 'Login'}</button>
+          <button className="button primary dunda-sidebar-primary" disabled={loading}>{loading ? 'Signing in...' : 'Open control centre'}</button>
         </form>
         <div className="auth-footer">
-          <span>No account yet?</span>
-          <Link to="/register">Register</Link>
+          <span>New organiser?</span>
+          <Link to="/register">Create account</Link>
         </div>
         <div className="demo-box">
-          <strong>Demo organizer</strong>
+          <strong>Demo organiser</strong>
           <div>grace@changia.app / Organizer123!</div>
         </div>
+        <Link className="dunda-auth-home" to="/">← Back to Dunda</Link>
       </div>
     </div>
   );
