@@ -9,6 +9,7 @@ import spacesRoutes from './routes/spaces.routes.js';
 import contributionsRoutes from './routes/contributions.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import dundaRoutes from './routes/dunda.routes.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 
 const app = express();
@@ -21,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.resolve(process.cwd(), env.uploadsDir)));
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'changia-backend' });
+  res.json({ status: 'ok', service: 'changia-backend', product: 'Dunda by Changia' });
 });
 
 app.use('/api/auth', authRoutes);
@@ -29,6 +30,7 @@ app.use('/api/spaces', spacesRoutes);
 app.use('/api/contributions', contributionsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/dunda', dundaRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
